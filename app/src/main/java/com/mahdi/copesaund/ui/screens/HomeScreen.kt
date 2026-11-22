@@ -373,7 +373,7 @@ fun HomeScreen(
                         checked = consent,
                         onCheckedChange = {
                             consent = it
-                            if (it) settings.setConsentNeverAsk(true)
+                            if (it) settings.updateConsentNeverAsk(true)
                         }
                     )
                     Text(stringResource(R.string.consent), style = MaterialTheme.typography.labelMedium)

@@ -69,21 +69,21 @@ fun SettingsScreen(settings: AppSettings, onClearHistory: () -> Unit) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = settings.engineMode == EngineMode.AUTO,
-                        onClick = { settings.setEngineMode(EngineMode.AUTO) }
+                        onClick = { settings.updateEngineMode(EngineMode.AUTO) }
                     )
                     Text(stringResource(R.string.engine_auto), style = MaterialTheme.typography.bodyMedium)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = settings.engineMode == EngineMode.SERVER,
-                        onClick = { settings.setEngineMode(EngineMode.SERVER) }
+                        onClick = { settings.updateEngineMode(EngineMode.SERVER) }
                     )
                     Text(stringResource(R.string.engine_server), style = MaterialTheme.typography.bodyMedium)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = settings.engineMode == EngineMode.DEVICE,
-                        onClick = { settings.setEngineMode(EngineMode.DEVICE) }
+                        onClick = { settings.updateEngineMode(EngineMode.DEVICE) }
                     )
                     Text(stringResource(R.string.engine_device), style = MaterialTheme.typography.bodyMedium)
                 }
@@ -102,7 +102,7 @@ fun SettingsScreen(settings: AppSettings, onClearHistory: () -> Unit) {
                             scope.launch {
                                 val client = CloneClient(context)
                                 val result = client.health(urlText.trim().trimEnd('/'))
-                                if (result.isSuccess) settings.setServerUrl(urlText)
+                                if (result.isSuccess) settings.updateServerUrl(urlText)
                                 testState = context.getString(
                                     if (result.isSuccess) R.string.server_ok else R.string.server_bad
                                 ) + (result.exceptionOrNull()?.let { " (${it.message})" } ?: "")
@@ -110,7 +110,7 @@ fun SettingsScreen(settings: AppSettings, onClearHistory: () -> Unit) {
                         }) {
                             Text(stringResource(R.string.test_connection))
                         }
-                        OutlinedButton(onClick = { settings.setServerUrl(urlText) }) {
+                        OutlinedButton(onClick = { settings.updateServerUrl(urlText) }) {
                             Text(stringResource(R.string.ok))
                         }
                     }
@@ -134,21 +134,21 @@ fun SettingsScreen(settings: AppSettings, onClearHistory: () -> Unit) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = settings.themeMode == ThemeMode.SYSTEM,
-                        onClick = { settings.setThemeMode(ThemeMode.SYSTEM) }
+                        onClick = { settings.updateThemeMode(ThemeMode.SYSTEM) }
                     )
                     Text(stringResource(R.string.theme_system), style = MaterialTheme.typography.bodyMedium)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = settings.themeMode == ThemeMode.LIGHT,
-                        onClick = { settings.setThemeMode(ThemeMode.LIGHT) }
+                        onClick = { settings.updateThemeMode(ThemeMode.LIGHT) }
                     )
                     Text(stringResource(R.string.theme_light), style = MaterialTheme.typography.bodyMedium)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = settings.themeMode == ThemeMode.DARK,
-                        onClick = { settings.setThemeMode(ThemeMode.DARK) }
+                        onClick = { settings.updateThemeMode(ThemeMode.DARK) }
                     )
                     Text(stringResource(R.string.theme_dark), style = MaterialTheme.typography.bodyMedium)
                 }

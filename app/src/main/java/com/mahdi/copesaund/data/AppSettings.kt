@@ -38,22 +38,22 @@ class AppSettings(context: Context) {
             EngineMode.AUTO -> serverUrl.isNotBlank()
         }
 
-    fun setServerUrl(value: String) {
+    fun updateServerUrl(value: String) {
         serverUrl = value.trim().trimEnd('/')
         prefs.edit().putString(KEY_SERVER, serverUrl).apply()
     }
 
-    fun setEngineMode(mode: EngineMode) {
+    fun updateEngineMode(mode: EngineMode) {
         engineMode = mode
         prefs.edit().putString(KEY_ENGINE, mode.name).apply()
     }
 
-    fun setThemeMode(mode: ThemeMode) {
+    fun updateThemeMode(mode: ThemeMode) {
         themeMode = mode
         prefs.edit().putString(KEY_THEME, mode.name).apply()
     }
 
-    fun setConsentNeverAsk(value: Boolean) {
+    fun updateConsentNeverAsk(value: Boolean) {
         consentNeverAsk = value
         prefs.edit().putBoolean(KEY_CONSENT, value).apply()
     }
