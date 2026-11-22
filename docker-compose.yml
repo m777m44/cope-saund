@@ -1,0 +1,30 @@
+services:
+  server:
+    build: ./server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - COPE_SAUND_ENGINE=${COPE_SAUND_ENGINE:-chatterbox}
+    # أوزان النماذج تُنزَّل عند أول تشغيل (راجع scripts/download_models.sh)
+
+  telegram_bot:
+    build: ./telegram_bot
+    restart: unless-stopped
+    depends_on:
+      - server
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - ADMIN_ID=${ADMIN_ID}
+      - CLONE_SERVER_URL=http://server:8000
+      - MIN_SAMPLE_SECONDS=${MIN_SAMPLE_SECONDS:-10}
+      - MAX_SAMPLE_SECONDS=${MAX_SAMPLE_SECONDS:-30}
+      - MAX_TEXT_LENGTH=${MAX_TEXT_LENGTH:-500}
+      - DAILY_LIMIT_DEFAULT=${DAILY_LIMIT_DEFAULT:-5}
+      - COOLDOWN_SECONDS=${COOLDOWN_SECONDS:-30}
+      - HISTORY_LIMIT=${HISTORY_LIMIT:-10}
+    volumes:
+      - bot_data:/app/data
+
+volumes:
+  bot_data:

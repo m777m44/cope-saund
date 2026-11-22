@@ -9,6 +9,7 @@
 ```
 ├── app/        ← تطبيق أندرويد (Kotlin, Compose, Material 3) — com.mahdi.copesaund
 ├── server/     ← خادم استنساخ FastAPI (Chatterbox MIT / SoproTTS Apache-2.0)
+├── telegram_bot/ ← بوت تليجرام يخدم خادم الاستنساخ الذاتي (pyTelegramBotAPI)
 ├── models/     ← سكربت تنزيل الأوزان (لا تُرفع الأوزان للمستودع)
 ├── scripts/    ← أدوات مساعدة
 ├── docs/       ← بحث مقارنة نماذج الاستنساخ
@@ -27,6 +28,21 @@
 cd server && docker build -t cope-saund-server . && docker run -p 8000:8000 cope-saund-server
 # ثم في التطبيق: الإعدادات ← الخادم ← http://192.168.1.10:8000 ← اختبار
 ```
+
+## بوت تليجرام 🎭 (اختياري)
+
+بوت يقدّم الاستنساخ الحقيقي مباشرة داخل تليجرام عبر نفس الخادم الذاتي — بحصص يومية،
+تهدئة، سجل، إحصائيات، ولوحة إدارة كاملة (إذاعة، عضويات مدفوعة، قنوات إجبارية).
+
+```bash
+cp telegram_bot/.env.example .env   # املأ BOT_TOKEN و ADMIN_ID
+docker compose up --build -d        # يشغّل الخادم + البوت معًا
+```
+
+التفاصيل الكاملة في `telegram_bot/README.md`.
+
+> 🔐 **تنبيه أمني**: لا تضع توكن البوت في الكود أو الملفات — فقط في `.env` المحلي أو
+> متغيرات البيئة. إذا سبق أن تسرب توكن، ألغِه فورًا من @BotFather (Revoke).
 
 ## ميزات التطبيق
 
