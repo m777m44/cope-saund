@@ -183,7 +183,8 @@ fun PlayerScreen(item: HistoryItem, onClose: () -> Unit) {
     }
 }
 
-private fun saveToMusic(context: Context, item: HistoryItem): Boolean = try {
+private fun saveToMusic(context: Context, item: HistoryItem): Boolean {
+    return try {
     val src = File(item.filePath)
     val name = "cope-saund-mahdi-${item.id.take(8)}.wav"
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -207,6 +208,7 @@ private fun saveToMusic(context: Context, item: HistoryItem): Boolean = try {
         src.copyTo(File(dir, name), overwrite = true)
         true
     }
-} catch (_: Exception) {
-    false
+    } catch (_: Exception) {
+        false
+    }
 }
