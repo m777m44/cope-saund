@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Cope Saund Mahdi</string>
+    <string name="tagline">Voice cloning studio — record, type, speak</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_history">History</string>
+    <string name="tab_settings">Settings</string>
+
+    <string name="sample_title">1. Voice sample</string>
+    <string name="sample_hint">Record 3–30 seconds of clean speech, or pick an audio file. The clearer the sample, the better the clone.</string>
+    <string name="record">Record</string>
+    <string name="stop">Stop</string>
+    <string name="pick_file">Pick file</string>
+    <string name="recording_time">%1$.1f s / 30.0 s</string>
+    <string name="sample_ready">Sample ready: %1$s (%2$s)</string>
+    <string name="sample_remove">Remove</string>
+    <string name="permission_needed">Microphone permission is required to record.</string>
+
+    <string name="text_title">2. Text to speak</string>
+    <string name="text_hint">Type the text you want the cloned voice to read…</string>
+    <string name="char_count">%1$d characters</string>
+    <string name="speed">Speed</string>
+    <string name="speed_value">%1$.1f×</string>
+    <string name="exaggeration">Emotion intensity</string>
+
+    <string name="consent">I confirm I have the right to clone this voice, and I accept responsibility for how the audio is used.</string>
+    <string name="clone">Clone voice</string>
+    <string name="cloning">Cloning…</string>
+    <string name="clone_done">Done! Tap to play.</string>
+    <string name="err_no_sample">Add a voice sample first.</string>
+    <string name="err_no_text">Type some text first.</string>
+    <string name="err_no_consent">Please confirm the consent checkbox.</string>
+    <string name="err_no_server">No clone server configured. Add one in Settings, or switch to the on-device voice engine.</string>
+
+    <string name="player_title">Result</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="download">Save to device</string>
+    <string name="share">Share</string>
+    <string name="saved_to">Saved to Music</string>
+    <string name="save_failed">Could not save the file.</string>
+
+    <string name="history_title">History</string>
+    <string name="history_empty">No history yet. Clone your first voice!</string>
+    <string name="clear_history">Clear all</string>
+    <string name="delete">Delete</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="engine_title">Cloning engine</string>
+    <string name="engine_auto">Auto (server if configured, else on-device)</string>
+    <string name="engine_server">Server (real voice cloning — Chatterbox)</string>
+    <string name="engine_device">On-device (offline — system voice, no cloning)</string>
+    <string name="server_url">Clone server URL</string>
+    <string name="server_url_hint">http://192.168.1.10:8000</string>
+    <string name="test_connection">Test</string>
+    <string name="server_ok">Connected ✓</string>
+    <string name="server_bad">Connection failed ✗</string>
+    <string name="testing">Testing…</string>
+    <string name="theme_title">Theme</string>
+    <string name="theme_system">Auto (system)</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+</resources>

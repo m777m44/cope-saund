@@ -1,0 +1,24 @@
+# Build outputs
+.gradle/
+build/
+app/build/
+local.properties
+*.iml
+.idea/
+captures/
+.DS_Store
+
+# Long-term projects should move to GitHub Secrets (KEYSTORE_BASE64 / KEYSTORE_PASSWORD / KEY_ALIAS / KEY_PASSWORD)
+# - the workflow prefers secrets and ignores this file when they exist.
+
+# The committed signing/release.keystore is intentional: it holds no secret
+# on its own, its passwords live in GitHub Actions secrets.
+!signing/release.keystore
+
+# Model weights are never committed
+models/*.onnx
+models/*.safetensors
+models/*.bin
+models/*.ckpt
+models/*.pt
+*.wav
