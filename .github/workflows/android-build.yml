@@ -50,14 +50,15 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           mkdir -p signing
-          if [ -n "$KEYSTORE_BASE64" ]; then
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ]; then
             echo "$KEYSTORE_BASE64" | base64 -d > signing/release.keystore
-          fi
-          if [ -f signing/release.keystore ]; then
             printf 'storeFile=release.keystore\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\nstoreType=PKCS12\n' \
-              "$KEYSTORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > signing/keystore.properties
+              "$KEYSTORE_PASSWORD" "$KEY_ALIAS" "${KEY_PASSWORD:-$KEYSTORE_PASSWORD}" > signing/keystore.properties
+          elif [ -f signing/release.keystore ] && [ -f signing/keystore.properties ]; then
+            echo "Using signing key committed to the repository. Prefer GitHub Secrets for production."
           else
-            echo "::warning::No keystore available (no KEYSTORE_BASE64 secret and no committed file) - building unsigned APK."
+            echo "::warning::No keystore available (no secrets and no committed file) - building unsigned APK."
+            rm -f signing/keystore.properties
           fi
 
       - name: Build signed release APK
