@@ -56,6 +56,8 @@ import com.mahdi.copesaund.R
 import com.mahdi.copesaund.audio.RecorderController
 import com.mahdi.copesaund.audio.WavUtil
 import com.mahdi.copesaund.data.AppSettings
+import com.mahdi.copesaund.data.AudioInfo
+import com.mahdi.copesaund.data.AudioProbe
 import com.mahdi.copesaund.data.HistoryStore
 import com.mahdi.copesaund.model.HistoryItem
 import com.mahdi.copesaund.model.Languages
@@ -98,18 +100,17 @@ fun HomeScreen(
     var levels by remember { mutableStateOf<List<Int>>(emptyList()) }
     var sampleFile by remember { mutableStateOf<File?>(null) }
     var sampleDurationMs by remember { mutableLongStateOf(0L) }
+    var sampleInfo by remember { mutableStateOf<AudioInfo?>(null) }
 
     val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             scope.launch {
                 val out = File(recorder.recordingsDir(), "import_${System.currentTimeMillis()}")
-                val f = withContext(Dispatchers.IO) {
-                    context.contentResolver.openInputStream(uri)?.use { input ->
-                        out.outputStream().use { input.copyTo(it) }
-                    }
-                    out
+                val (f, info) = withContext(Dispatchers.IO) {
+                    AudioProbe.probeUri(context, uri, out)
                 }
-                val d = withContext(Dispatchers.IO) { WavUtil.durationMs(f) }
+                sampleInfo = info
+                val d = info?.durationMs ?: withContext(Dispatchers.IO) { WavUtil.durationMs(f) }
                 val a = withContext(Dispatchers.IO) { WavUtil.readAmplitudes(f) }
                 sampleFile = f
                 sampleDurationMs = d
@@ -124,6 +125,7 @@ fun HomeScreen(
     var speed by remember { mutableFloatStateOf(1f) }
     var pitch by remember { mutableFloatStateOf(1f) }
     var exaggeration by remember { mutableFloatStateOf(1.25f) }
+    var instruct by remember { mutableStateOf("") }
     var consent by remember { mutableStateOf(settings.consentNeverAsk) }
     var busy by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
@@ -141,6 +143,7 @@ fun HomeScreen(
             val f = recorder.stop(out)
             recording = false
             sampleFile = f
+            sampleInfo = null
             scope.launch {
                 val d = withContext(Dispatchers.IO) { WavUtil.durationMs(f) }
                 val a = withContext(Dispatchers.IO) { WavUtil.readAmplitudes(f) }
@@ -174,7 +177,7 @@ fun HomeScreen(
                 scope.launch {
                     val result = withContext(Dispatchers.IO) {
                         if (useServer) {
-                            client.clone(settings.serverUrl, text.trim(), language, speed, exaggeration, sample)
+                            client.clone(settings.serverUrl, text.trim(), language, speed, exaggeration, sample, instruct)
                         } else {
                             val dir = File(context.filesDir, "exports").apply { mkdirs() }
                             val out = File(dir, "clone_${System.currentTimeMillis()}.wav")
@@ -262,10 +265,20 @@ fun HomeScreen(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
+                        sampleInfo?.let { info ->
+                            Text(
+                                text = AudioProbe.summarize(info),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
                         TextButton(onClick = {
                             sampleFile = null
                             levels = emptyList()
                             sampleDurationMs = 0
+                            sampleInfo = null
                         }) {
                             Text(stringResource(R.string.sample_remove))
                         }
@@ -366,6 +379,17 @@ fun HomeScreen(
                         value = pitch,
                         onValueChange = { pitch = ((it * 20).toInt() / 20f) },
                         valueRange = 0.5f..2f
+                    )
+                }
+                if (settings.serverEffective) {
+                    OutlinedTextField(
+                        value = instruct,
+                        onValueChange = { instruct = it.take(120) },
+                        label = { Text(stringResource(R.string.instruct_hint)) },
+                        placeholder = { Text(stringResource(R.string.instruct_example)) },
+                        supportingText = { Text(stringResource(R.string.instruct_support)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {

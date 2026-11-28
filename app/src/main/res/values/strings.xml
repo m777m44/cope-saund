@@ -23,6 +23,9 @@
     <string name="speed">Speed</string>
     <string name="speed_value">%1$.1f×</string>
     <string name="exaggeration">Emotion intensity</string>
+    <string name="instruct_hint">Voice style (optional)</string>
+    <string name="instruct_example">e.g. young adult, high pitch, whisper</string>
+    <string name="instruct_support">Applied by the ice engine on your server (age, pitch, accent, whisper)</string>
 
     <string name="consent">I confirm I have the right to clone this voice, and I accept responsibility for how the audio is used.</string>
     <string name="clone">Clone voice</string>

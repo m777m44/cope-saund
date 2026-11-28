@@ -23,4 +23,16 @@ except Exception as exc:
     print("skipped sopro:", exc)
 PY
 
+
+echo "==> Optional: ice-012-audio (darkps) — CC-BY-NC-4.0, NON-COMMERCIAL use only (see NOTICES.md)"
+python3 - <<'PY'
+try:
+    from huggingface_hub import snapshot_download
+    snapshot_download("darkps/ice-012-audio", local_dir="ice-012-audio",
+                      allow_patterns=["*.json", "*.py", "*.safetensors", "*.txt", "*.jinja"])
+    print("ice-012-audio -> models/ice-012-audio (license: CC-BY-NC-4.0)")
+except Exception as exc:
+    print("skipped ice-012-audio:", exc)
+PY
+
 echo "==> Done."

@@ -23,6 +23,9 @@
     <string name="speed">السرعة</string>
     <string name="speed_value">%1$.1f×</string>
     <string name="exaggeration">شدة العاطفة</string>
+    <string name="instruct_hint">أسلوب الصوت (اختياري)</string>
+    <string name="instruct_example">مثال: شاب، طبقة مرتفعة، همس</string>
+    <string name="instruct_support">يُطبّق عبر محرك ice على خادمك (العمر، الطبقة، اللهجة، الهمس)</string>
 
     <string name="consent">أؤكد أنني أملك الحق في استنساخ هذا الصوت، وأتحمّل مسؤولية الاستخدام.</string>
     <string name="clone">استنساخ الصوت</string>

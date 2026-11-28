@@ -37,7 +37,8 @@ class CloneClient(private val context: Context) {
         language: String,
         speed: Float,
         exaggeration: Float,
-        ref: File
+        ref: File,
+        instruct: String? = null
     ): Result<File> = withContext(Dispatchers.IO) {
         runCatching {
             val body = MultipartBody.Builder()
@@ -49,6 +50,9 @@ class CloneClient(private val context: Context) {
                 .addFormDataPart(
                     "ref", ref.name, ref.asRequestBody("audio/wav".toMediaType())
                 )
+            if (!instruct.isNullOrBlank()) {
+                body.addFormDataPart("instruct", instruct.trim())
+            }
                 .build()
             val req = Request.Builder().url("$serverUrl/clone").post(body).build()
             client.newCall(req).execute().use { resp ->

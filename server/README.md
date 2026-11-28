@@ -2,14 +2,37 @@
 
 خدمة FastAPI خفيفة توفّر واجهة REST للاستنساخ الصوتي الحقيقي (zero-shot) باستخدام
 **Chatterbox Multilingual** (Resemble AI — رخصة MIT)، مع خيار محرك **SoproTTS**
-(Apache-2.0، أخف ويكفي للإنجليزية) عبر المتغير `COPE_SAUND_ENGINE=sopro`.
+(Apache-2.0، أخف ويكفي للإنجليزية) عبر المتغير `COPE_SAUND_ENGINE=sopro`،
+ومحرك **ice-012-audio** (darkps — 590 لغة ولهجة من بينها 13 لهجة عربية،
+مع تحكم بالأسلوب: عمر/طبقة/لهجة/همس) عبر `COPE_SAUND_ENGINE=ice`.
+
+> ⚠️ محرك `ice` يعتمد نموذجًا بترخيص **CC-BY-NC-4.0 (غير تجاري فقط)** — راجع NOTICES.md.
 
 ## Endpoints
 
 | Method | Path      | Body                                              | Response                       |
 |--------|-----------|---------------------------------------------------|--------------------------------|
 | GET    | `/health` | —                                                 | `{status, engine, languages}`  |
-| POST   | `/clone`  | multipart: `ref` (ملف صوتي), `text`, `language`, `speed`, `exaggeration` | `audio/wav` |
+| POST   | `/clone`  | multipart: `ref` (أي صيغة صوتية), `text`, `language`, `speed`, `exaggeration`, `instruct` (اختياري) | `audio/wav` |
+| POST   | `/enhance`| `{"text": "..."}` — تحسين النص قبل القراءة (يتطلب `ICE_AI_ENABLE=1`) | `{text}` |
+
+## المحركات
+
+| `COPE_SAUND_ENGINE` | النموذج | الترخيص | ملاحظات |
+|---|---|---|---|
+| `chatterbox` (افتراضي) | Chatterbox Multilingual | MIT | 23 لغة، تحكم عاطفة، علامة مائية |
+| `sopro` | SoproTTS | Apache-2.0 | إنجليزية فقط، أخف على CPU |
+| `ice` | darkps/ice-012-audio | **CC-BY-NC-4.0** | 590 لغة/لهجة، `instruct` للأسلوب، يحتاج RAM أكبر |
+
+الصيغ المدعومة للعينة المرجعية: WAV, MP3, FLAC, OGG, M4A, AMR, 3GP — تُحوَّل تلقائيًا
+إلى WAV عبر ffmpeg عند توفره.
+
+### متغيرات البيئة الإضافية
+
+| المتغير | الافتراضي | الوصف |
+|---|---|---|
+| `COPE_SAUND_ENGINE` | `chatterbox` | `chatterbox` \| `sopro` \| `ice` |
+| `ICE_AI_ENABLE` | `0` | يفعّل محسّن النص ice-AI (نموذج 8B ثقيل — Apache-2.0) |
 
 ## التشغيل عبر Docker (الموصى به)
 

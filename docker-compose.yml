@@ -6,6 +6,7 @@ services:
       - "8000:8000"
     environment:
       - COPE_SAUND_ENGINE=${COPE_SAUND_ENGINE:-chatterbox}
+      - ICE_AI_ENABLE=${ICE_AI_ENABLE:-0}
     # أوزان النماذج تُنزَّل عند أول تشغيل (راجع scripts/download_models.sh)
 
   telegram_bot:
