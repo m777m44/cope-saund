@@ -1,0 +1,107 @@
+name: Android Build & Sign
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 1.0.0)"
+        required: false
+        default: "1.0.0"
+      create_release:
+        description: "Create a GitHub Release with the signed APK"
+        required: false
+        default: true
+        type: boolean
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Ensure Android SDK components
+        run: |
+          for pkg in "platforms;android-35" "build-tools;35.0.0"; do
+            yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "$pkg" > /dev/null || true
+          done
+
+      - name: Restore signing config
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          mkdir -p signing
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > signing/release.keystore
+            printf 'storeFile=release.keystore\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\nstoreType=PKCS12\n' \
+              "$KEYSTORE_PASSWORD" "$KEY_ALIAS" "${KEY_PASSWORD:-$KEYSTORE_PASSWORD}" > signing/keystore.properties
+          elif [ -f signing/release.keystore ] && [ -f signing/keystore.properties ]; then
+            echo "Using signing key committed to the repository. Prefer GitHub Secrets for production."
+          else
+            echo "::warning::No keystore available (no secrets and no committed file) - building unsigned APK."
+            rm -f signing/keystore.properties
+          fi
+
+      - name: Build signed release APK
+        run: gradle :app:assembleRelease --no-daemon --stacktrace
+
+      - name: Collect APK
+        run: |
+          mkdir -p dist
+          APK=$(find app/build/outputs/apk/release -name '*.apk' | head -n1)
+          test -n "$APK" || { echo "No APK produced"; exit 1; }
+          cp "$APK" dist/cope-saund-mahdi.apk
+          ls -la dist
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cope-saund-mahdi-apk
+          path: dist/cope-saund-mahdi.apk
+
+      - name: Publish release
+        if: ${{ github.event_name == 'push' || inputs.create_release }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ github.ref_type == 'tag' && github.ref_name || inputs.version || '1.0.0' }}
+        run: |
+          VER="${VERSION#v}"
+          TAG="v$VER"
+          {
+            echo "## Cope Saund Mahdi $VER"
+            echo ""
+            echo "- تطبيق أندرويد للاستنساخ الصوتي (واجهة عربية/إنجليزية، Material 3)"
+            echo "- محرك خادم Chatterbox (MIT) للاستنساخ الحقيقي + محرك أندرويد المدمج للعمل دون إنترنت"
+            echo "- APK موقّع: \`cope-saund-mahdi.apk\` (حمّله من Assets أدناه)"
+            echo ""
+            echo "**ملاحظة:** للتنزيل على الهاتف افتح هذا الرابط مباشرة في المتصفح."
+          } > release-notes.md
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release upload "$TAG" dist/cope-saund-mahdi.apk --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "Cope Saund Mahdi $VER" \
+              --notes-file release-notes.md \
+              dist/cope-saund-mahdi.apk
+          fi

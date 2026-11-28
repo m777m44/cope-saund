@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Cope Saund Mahdi</string>
+    <string name="tagline">استوديو استنساخ الأصوات — سجّل، اكتب، وبثّق</string>
+
+    <string name="tab_home">الرئيسية</string>
+    <string name="tab_history">السجل</string>
+    <string name="tab_settings">الإعدادات</string>
+
+    <string name="sample_title">١. عيّنة الصوت</string>
+    <string name="sample_hint">سجّل من ٣ إلى ٣٠ ثانية بنطق واضح أو اختر ملفاً صوتياً. كلما كانت العيّنة أنقى كان الاستنساخ أدق.</string>
+    <string name="record">تسجيل</string>
+    <string name="stop">إيقاف</string>
+    <string name="pick_file">اختيار ملف</string>
+    <string name="recording_time">%1$.1f ث / 30.0 ث</string>
+    <string name="sample_ready">العيّنة جاهزة: %1$s (%2$s)</string>
+    <string name="sample_remove">إزالة</string>
+    <string name="permission_needed">إذن الميكروفون مطلوب للتسجيل.</string>
+
+    <string name="text_title">٢. النص المراد نطقه</string>
+    <string name="text_hint">اكتب النص الذي تريده أن ينطقه الصوت المستنسخ…</string>
+    <string name="char_count">%1$d حرفاً</string>
+    <string name="speed">السرعة</string>
+    <string name="speed_value">%1$.1f×</string>
+    <string name="exaggeration">شدة العاطفة</string>
+    <string name="instruct_hint">أسلوب الصوت (اختياري)</string>
+    <string name="instruct_example">مثال: شاب، طبقة مرتفعة، همس</string>
+    <string name="instruct_support">يُطبّق عبر محرك ice على خادمك (العمر، الطبقة، اللهجة، الهمس)</string>
+
+    <string name="consent">أؤكد أنني أملك الحق في استنساخ هذا الصوت، وأتحمّل مسؤولية الاستخدام.</string>
+    <string name="clone">استنساخ الصوت</string>
+    <string name="cloning">جارٍ الاستنساخ…</string>
+    <string name="clone_done">تم! اضغط للاستماع.</string>
+    <string name="err_no_sample">أضف عيّنة صوت أولاً.</string>
+    <string name="err_no_text">اكتب نصاً أولاً.</string>
+    <string name="err_no_consent">يرجى تأكيد مربع الموافقة.</string>
+    <string name="err_no_server">لم يتم ضبط خادم الاستنساخ. أضفه من الإعدادات، أو استخدم محرك الصوت المدمج.</string>
+
+    <string name="player_title">النتيجة</string>
+    <string name="play">تشغيل</string>
+    <string name="pause">إيقاف مؤقت</string>
+    <string name="download">حفظ على الجهاز</string>
+    <string name="share">مشاركة</string>
+    <string name="saved_to">تم الحفظ في الموسيقى</string>
+    <string name="save_failed">تعذّر حفظ الملف.</string>
+
+    <string name="history_title">السجل</string>
+    <string name="history_empty">لا يوجد سجل بعد. جرّب أول استنساخ!</string>
+    <string name="clear_history">حذف الكل</string>
+    <string name="delete">حذف</string>
+
+    <string name="settings_title">الإعدادات</string>
+    <string name="engine_title">محرك الاستنساخ</string>
+    <string name="engine_auto">تلقائي (الخادم إن وُجد، وإلا الصوت المدمج)</string>
+    <string name="engine_server">خادم (استنساخ حقيقي — Chatterbox)</string>
+    <string name="engine_device">على الجهاز (بدون إنترنت — صوت النظام دون استنساخ)</string>
+    <string name="server_url">عنوان خادم الاستنساخ</string>
+    <string name="server_url_hint">http://192.168.1.10:8000</string>
+    <string name="test_connection">اختبار</string>
+    <string name="server_ok">تم الاتصال ✓</string>
+    <string name="server_bad">فشل الاتصال ✗</string>
+    <string name="testing">جارٍ الاختبار…</string>
+    <string name="theme_title">المظهر</string>
+    <string name="theme_system">تلقائي (النظام)</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+
+    <string name="close">إغلاق</string>
+    <string name="cancel">إلغاء</string>
+    <string name="ok">حسناً</string>
+</resources>

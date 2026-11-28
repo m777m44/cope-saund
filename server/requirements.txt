@@ -1,0 +1,15 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9
+chatterbox-tts>=0.1.2
+soundfile>=0.12
+sopro>=2.2
+numpy>=1.26,<3
+torch>=2.1
+torchaudio>=2.1
+# --- ice-012-audio engine (COPE_SAUND_ENGINE=ice) ---
+transformers>=4.53
+accelerate>=0.33
+librosa>=0.10
+pydub>=0.25
+sentencepiece>=0.2
