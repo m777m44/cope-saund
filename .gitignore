@@ -22,3 +22,6 @@ models/*.bin
 models/*.ckpt
 models/*.pt
 *.wav
+
+__pycache__/
+*.pyc
